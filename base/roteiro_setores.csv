@@ -1,0 +1,8 @@
+seq;setor;predecessora;abre_com_pct;origem;observacao
+10;Projeto/CAD;;0;CADASTRADO;Primeira etapa - comeca na data de liberacao
+20;CAM;Projeto/CAD;40;CADASTRADO;"CAM abre com 40% do CAD liberado" - aba Premissas do cronograma mestre
+30;Solda;Projeto/CAD;40;PREMISSA;As premissas nao dizem quando a solda abre. No cronograma atual ela corre junto com o CAM - confirmar
+40;Usinagem;CAM;40;CADASTRADO;"CNC com 40% do CAM" - aba Premissas
+45;Convencional;Usinagem;50;PREMISSA;Respiros, peneiras e furacoes - confirmar quando abre
+50;Bancada;Usinagem;50;CADASTRADO;"bancada com 50% da usinagem" - aba Premissas
+60;Digitalizacao;Bancada;60;CADASTRADO;"digitalizacao com 60% da bancada" - aba Premissas

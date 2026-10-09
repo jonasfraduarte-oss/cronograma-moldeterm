@@ -1,0 +1,15 @@
+seq;processo;etapa_macro;setor;unidade_padrao;consome_capacidade;sobreposicao_pct;origem;observacao
+10;PROJETOS;Engenharia;Engenharia CAD;dias;SIM;0;CADASTRADO;Matriz define Projeto em dias - nao converter em horas
+20;CAM;CAM;CAM;horas;SIM;0;CADASTRADO;
+30;MODELACAO;Modelacao;Modelacao;horas;SIM;0;CADASTRADO;Modelo primitivo
+40;FUNDICAO EXT;Fundicao;Terceiros;dias;NAO;0;CADASTRADO;Servico externo - nao consome capacidade interna
+50;FRESA CNC;Usinagem;CNC;horas;SIM;0;CADASTRADO;
+60;CNC GRANDE;Usinagem;CNC;horas;SIM;0;CADASTRADO;
+70;CNC MEDIO;Usinagem;CNC;horas;SIM;0;CADASTRADO;
+75;USINAGEM CNC;Usinagem;CNC;horas;SIM;0;CADASTRADO;Etapa agregada da matriz de complexidade
+80;AJUSTAGEM;Bancada;Bancada;horas;SIM;0;CADASTRADO;
+90;MONTAGEM;Montagem;Montagem;horas;SIM;0;CADASTRADO;
+95;MEDICAO INSPECAO;Qualidade;Qualidade;horas;SIM;0;CADASTRADO;
+900;ADMINISTRATIVO;Administrativo;Administrativo;horas;NAO;0;PREMISSA;Nao gera atividade no cronograma
+901;FRETE;Logistica;Logistica;horas;NAO;0;PREMISSA;Nao gera atividade no cronograma
+902;TERCEIROS;Terceiros;Terceiros;horas;NAO;0;PREMISSA;Sem duracao cadastrada no orcamento

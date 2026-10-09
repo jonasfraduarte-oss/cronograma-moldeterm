@@ -1,0 +1,38 @@
+processo_erp;setor_cronograma;origem;observacao
+PROJETOS;Projeto/CAD;CADASTRADO;Processo 1 da tabela de processos MoldeTerm
+CAD;Projeto/CAD;CADASTRADO;
+PROJETO;Projeto/CAD;CADASTRADO;
+ENGENHARIA;Projeto/CAD;PREMISSA;Confirmar se o ERP usa este nome
+CAM;CAM;CADASTRADO;Processo 2
+PROGRAMACAO CAM;CAM;PREMISSA;
+CNC GRANDE;Usinagem;CADASTRADO;Processo 4
+CNC MEDIO;Usinagem;CADASTRADO;Processo 5
+CNC PEQUENO;Usinagem;PREMISSA;Nao consta na tabela de processos - confirmar
+FRESA CNC;Usinagem;CADASTRADO;Processo 3
+TORNO CNC;Usinagem;CADASTRADO;Processo 8
+ELETRO FIO/EROSAO;Terceiros;CADASTRADO;Confirmado por Jonas em 14/09/2026 - servico externo, fora da capacidade interna
+ELETROEROSAO;Terceiros;CADASTRADO;idem
+FRESA CONV;Convencional;CADASTRADO;Processo 6 - fresadoras convencionais
+TORNO CONV;Convencional;PREMISSA;Processo 7 - confirmar se entra em Convencional
+SERRA HORIZ;Convencional;PREMISSA;Processo 10 - confirmar setor
+AJUSTAGEM;Bancada;CADASTRADO;Processo 9
+AJUSTAGEM 2;Bancada;CADASTRADO;
+AJUSTAGEM 3;Bancada;CADASTRADO;
+AJUSTAGEM 4;Bancada;CADASTRADO;
+AJUSTAGEM 5;Bancada;CADASTRADO;
+AJUSTAGEM 6;Bancada;CADASTRADO;
+AJUSTAGEM 7;Bancada;CADASTRADO;
+AJUSTAGEM 8;Bancada;CADASTRADO;
+BANCADA;Bancada;CADASTRADO;
+AJUSTE/MONTAGEM;Bancada;CADASTRADO;Mesmo processo da planilha da HM
+MONTAGEM;Bancada;PREMISSA;Processo 23 - o cronograma mestre nao tem setor Montagem separado
+SOLDAGEM;Solda;CADASTRADO;Processo 19
+SOLDA;Solda;CADASTRADO;
+MEDICAO INSPECAO;Digitalizacao;PREMISSA;Processo 24 - confirmar se corresponde ao setor Digitalizacao do cronograma
+DIGITALIZACAO;Digitalizacao;CADASTRADO;
+SCANNING;Digitalizacao;CADASTRADO;
+POLIMENTO;Bancada;PREMISSA;Processo 35 - confirmar setor
+JATEAMENTO;Bancada;PREMISSA;Processo 13 - confirmar setor
+MODELACAO;Modelacao;CADASTRADO;Processo 21 - setor nao existe no cronograma mestre atual
+ADMINISTRATIVO;-;CADASTRADO;Nao entra no cronograma de producao
+FRETE;-;CADASTRADO;Nao entra no cronograma de producao

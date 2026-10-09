@@ -1,0 +1,14 @@
+processo_planilha_hm;setor_cronograma;origem;observacao
+CAD;Projeto/CAD;CADASTRADO;
+CAM;CAM;CADASTRADO;
+Solda;Solda;CADASTRADO;
+CNC grande porte;Usinagem;CADASTRADO;
+CNC medio porte;Usinagem;CADASTRADO;
+CNC pequeno porte;Usinagem;CADASTRADO;
+Torno;Usinagem;CADASTRADO;
+Eletroerosao;Terceiros;CADASTRADO;Confirmado por Jonas em 14/09/2026 - servico externo, como ja classifica a tabela de processos da MoldeTerm. As horas ficam registradas mas nao consomem capacidade interna
+Ajuste/montagem;Bancada;CADASTRADO;
+Digitalizacao;Digitalizacao;CADASTRADO;
+Material P20;-;CADASTRADO;Materia-prima em kg - nao e hora, nao entra no cronograma
+Material 1045;-;CADASTRADO;Materia-prima em kg - nao e hora, nao entra no cronograma
+Acessorios;-;CADASTRADO;Componentes - nao e hora, nao entra no cronograma

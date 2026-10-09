@@ -1,0 +1,905 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cronograma MoldeTerm</title>
+<style>
+:root{
+  --bg:#eef1f5; --surface:#fff; --surface-2:#f7f9fb; --linha:#dde3ea; --linha-forte:#c3ccd8;
+  --txt:#161a1f; --txt-2:#5b6672; --txt-3:#8b95a1;
+  --azul:#1f5fa8; --azul-claro:#e8f0f9; --verde:#2f7a55; --ambar:#b5731a;
+  --vermelho:#b02a24; --cinza:#9aa5b1; --trilho:#e4e9ef;
+  --sombra:0 1px 2px rgba(16,24,40,.06),0 4px 12px rgba(16,24,40,.06);
+  --rotulo:400px; --alt:44px;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--txt);
+  font:13px/1.45 "Segoe UI",Roboto,system-ui,-apple-system,sans-serif;-webkit-font-smoothing:antialiased}
+button{font:inherit;color:inherit}
+header.topo{background:#12304f;color:#fff;padding:12px 18px;display:flex;align-items:center;
+  gap:14px;flex-wrap:wrap;position:sticky;top:0;z-index:50}
+.topo h1{margin:0;font-size:16px;font-weight:600;letter-spacing:.02em}
+.topo .sub{font-size:11.5px;color:#a9c1d8}
+.topo .espaco{flex:1}
+.btn{background:#fff;border:1px solid #fff;color:#12304f;border-radius:6px;padding:7px 13px;
+  cursor:pointer;font-size:12.5px;font-weight:600}
+.btn:hover{background:#e6eef7}
+.btn.vazado{background:#ffffff1a;border-color:#ffffff55;color:#fff}
+.btn.vazado:hover{background:#ffffff30}
+.kpis{display:flex;gap:1px;background:var(--linha);border-bottom:1px solid var(--linha);flex-wrap:wrap}
+.kpi{background:var(--surface);padding:11px 18px;flex:1;min-width:140px}
+.kpi .rot{font-size:10.5px;text-transform:uppercase;letter-spacing:.07em;color:var(--txt-3);font-weight:600}
+.kpi .val{font-size:20px;font-weight:600;margin-top:3px;font-variant-numeric:tabular-nums}
+.kpi .obs{font-size:11px;color:var(--txt-2);margin-top:1px}
+.kpi.alerta .val{color:var(--vermelho)}
+.kpi.real .val{color:var(--vermelho)}
+.abas{display:flex;gap:2px;padding:0 14px;background:var(--surface);border-bottom:1px solid var(--linha);
+  overflow-x:auto}
+.aba{padding:10px 14px;border:0;background:none;cursor:pointer;font-size:13px;color:var(--txt-2);
+  border-bottom:2.5px solid transparent;margin-bottom:-1px;white-space:nowrap}
+.aba:hover{color:var(--txt)}
+.aba.ativa{color:var(--azul);border-bottom-color:var(--azul);font-weight:600}
+.selo{background:var(--vermelho);color:#fff;border-radius:9px;padding:0 6px;font-size:10.5px;margin-left:5px}
+.filtros{display:flex;gap:10px;align-items:flex-end;padding:11px 16px;background:var(--surface-2);
+  border-bottom:1px solid var(--linha);flex-wrap:wrap}
+.campo{display:flex;flex-direction:column;gap:3px}
+.campo label{font-size:10.5px;text-transform:uppercase;letter-spacing:.06em;color:var(--txt-3);font-weight:600}
+.campo select,.campo input{border:1px solid var(--linha-forte);border-radius:5px;padding:6px 9px;
+  font:inherit;background:#fff;min-width:160px}
+.mini{display:flex;border:1px solid var(--linha-forte);border-radius:5px;overflow:hidden;background:#fff}
+.mini button{border:0;background:none;padding:5px 11px;cursor:pointer;font-size:12px;color:var(--txt-2)}
+.mini button.on{background:var(--azul);color:#fff}
+.link{background:none;border:0;color:var(--azul);cursor:pointer;padding:5px 4px;font-size:12.5px}
+.link:hover{text-decoration:underline}
+.painel{padding:14px 16px 40px}
+.quadro{background:var(--surface);border:1px solid var(--linha);border-radius:8px;box-shadow:var(--sombra);
+  overflow:hidden;margin-bottom:14px}
+.quadro h2{margin:0;padding:11px 16px;font-size:12.5px;text-transform:uppercase;letter-spacing:.07em;
+  color:var(--txt-2);border-bottom:1px solid var(--linha);background:var(--surface-2)}
+.rolagem{overflow:auto;max-height:calc(100vh - 300px)}
+.linha{display:flex;min-height:var(--alt);border-bottom:1px solid var(--linha)}
+.linha:hover .rotulo{background:var(--azul-claro)}
+.rotulo{width:var(--rotulo);min-width:var(--rotulo);position:sticky;left:0;z-index:2;background:var(--surface);
+  border-right:1px solid var(--linha-forte);display:flex;align-items:center;gap:5px;padding:0 8px;cursor:pointer}
+.rotulo .txt{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.rotulo .cnt{margin-left:auto;font-size:10.5px;color:var(--txt-3);padding-left:6px;white-space:nowrap;
+  font-variant-numeric:tabular-nums}
+.seta{width:15px;min-width:15px;text-align:center;color:var(--txt-3);font-size:9px;user-select:none}
+.n0 .txt{font-weight:700;font-size:12.5px}
+.n1 .txt{font-weight:600;color:#1a3f66}
+.n2 .txt{color:var(--txt-2)}
+.trilho{position:relative;flex:1;background:var(--surface);min-height:var(--alt)}
+.fds{position:absolute;top:0;bottom:0;background:#f0f2f5}
+.fer{position:absolute;top:0;bottom:0;background:#f5e6e4}
+
+.barra{position:absolute;border-radius:3px;overflow:hidden;cursor:pointer;
+  border:1px solid rgba(0,0,0,.10)}
+.b-prog{top:6px;height:14px}
+.b-real{top:24px;height:14px}
+.b-vazia{top:24px;height:14px;border:1px dashed #cdd5de;background:#fafbfc;border-radius:3px;
+  position:absolute;pointer-events:none}
+.st-plan{background:var(--azul)} .st-curta{background:var(--ambar)}
+.st-cron{background:repeating-linear-gradient(45deg,#8b95a1,#8b95a1 5px,#a8b2bd 5px,#a8b2bd 10px)}
+.st-real{background:var(--vermelho)}
+.rot-barra{position:absolute;font-size:10.5px;white-space:nowrap;font-variant-numeric:tabular-nums;
+  pointer-events:none;line-height:14px}
+.rot-prog{top:6px;color:var(--txt-2)}
+.rot-real{top:24px;color:var(--vermelho)}
+
+.cab{position:sticky;top:0;z-index:6;background:var(--surface-2);border-bottom:1px solid var(--linha-forte)}
+.cab .linha{min-height:0;border-bottom:0}
+.cab .rotulo{background:var(--surface-2);align-items:flex-end;padding-bottom:4px;font-size:10.5px;
+  text-transform:uppercase;letter-spacing:.06em;color:var(--txt-3);font-weight:600;cursor:default}
+.cab .trilho{min-height:0}
+.faixa-mes{height:20px;position:relative;border-bottom:1px solid var(--linha)}
+.faixa-mes span{position:absolute;top:0;height:20px;line-height:20px;font-size:10.5px;font-weight:600;
+  color:var(--txt-2);padding-left:6px;border-left:1px solid var(--linha-forte);text-transform:uppercase;
+  letter-spacing:.05em;overflow:hidden;white-space:nowrap}
+.faixa-dia{height:22px;position:relative}
+.faixa-dia span{position:absolute;top:0;height:22px;line-height:22px;text-align:center;font-size:10px;
+  color:var(--txt-3);font-variant-numeric:tabular-nums}
+.faixa-dia span.fds{background:#e9edf2;color:#9aa5b1}
+.faixa-dia span.fer{background:#f3e3e1;color:#a06058}
+.faixa-dia span.hj{background:#4a5560;color:#fff;font-weight:700;border-radius:3px}
+.legenda{display:flex;gap:14px;flex-wrap:wrap;padding:9px 16px;font-size:11.5px;color:var(--txt-2);
+  background:var(--surface-2);border-top:1px solid var(--linha)}
+.legenda i{display:inline-block;width:12px;height:11px;border-radius:3px;margin-right:5px;vertical-align:-1px}
+.legenda i.vazio{border:1px dashed #cdd5de;background:#fafbfc}
+
+.micro{border-bottom:2px solid var(--linha-forte);background:#fbfcfd}
+.micro .caixa{position:sticky;left:0;width:min(1280px,calc(100vw - 40px));padding:12px 14px 16px}
+.micro .cabec{display:flex;gap:18px;flex-wrap:wrap;align-items:baseline;margin-bottom:10px}
+.micro .cabec b{font-size:13.5px}
+.micro .cabec span{font-size:11.5px;color:var(--txt-2)}
+.micro h4{margin:14px 0 6px;font-size:11px;text-transform:uppercase;letter-spacing:.07em;color:var(--txt-3)}
+.micro h4.real{color:var(--vermelho)}
+.grade{border:1px solid var(--linha);border-radius:6px;overflow:auto;max-height:300px;background:#fff}
+.grade table{border-collapse:collapse;font-size:11px}
+.grade th{background:var(--surface-2);color:var(--txt-3);font-weight:600;padding:4px 3px;
+  border-bottom:1px solid var(--linha);font-size:10px;position:sticky;top:0;z-index:3;min-width:26px}
+.grade th.dia{left:0;z-index:4;text-align:left;padding-left:8px;min-width:92px}
+.grade td{border-bottom:1px solid #eef1f4;border-right:1px solid #f2f4f7;padding:0;height:21px}
+.grade td.dia{padding:0 8px;white-space:nowrap;color:var(--txt-2);font-variant-numeric:tabular-nums;
+  background:var(--surface-2);position:sticky;left:0;font-size:10.5px;z-index:2}
+.cel{height:21px;display:flex;align-items:center;justify-content:center;font-size:9.5px;color:#fff;
+  font-weight:600}
+.grade td.tot{padding:0 7px;text-align:right;font-variant-numeric:tabular-nums;font-weight:600;
+  background:var(--surface-2);white-space:nowrap}
+table.dados{width:100%;border-collapse:collapse;font-size:12px}
+table.dados th{text-align:left;padding:7px 9px;border-bottom:1.5px solid var(--linha-forte);font-size:10.5px;
+  text-transform:uppercase;letter-spacing:.05em;color:var(--txt-3);background:var(--surface-2);
+  position:sticky;top:0;z-index:2;white-space:nowrap}
+table.dados td{padding:6px 9px;border-bottom:1px solid #eef1f4;font-variant-numeric:tabular-nums;
+  vertical-align:top}
+table.dados td.txt{font-variant-numeric:normal}
+table.dados tr:hover td{background:var(--surface-2)}
+.num{text-align:right}
+.tag{display:inline-block;padding:1px 7px;border-radius:20px;font-size:10.5px;font-weight:600;color:#fff;
+  white-space:nowrap}
+.t-hm{background:var(--azul)} .t-cron{background:var(--cinza)} .t-pre{background:var(--ambar)}
+.t-pend{background:var(--vermelho)} .t-ok{background:var(--verde)}
+.aviso{background:#fdf3e3;border:1px solid #edd7a8;color:#7a5314;padding:10px 13px;border-radius:6px;
+  margin-bottom:10px;font-size:12.5px}
+.aviso.erro{background:#fdeceb;border-color:#eebfbb;color:#8a2a22}
+.aviso.ok{background:#eaf5ee;border-color:#b9dcc6;color:#1f5c3d}
+.vazio{padding:40px;text-align:center;color:var(--txt-3)}
+.barrinha{background:var(--trilho);border-radius:4px;height:15px;position:relative;min-width:90px}
+.barrinha .f{position:absolute;left:0;top:0;bottom:0;border-radius:4px}
+.nota{font-size:11.5px;color:var(--txt-3);padding:10px 16px;line-height:1.5}
+code{background:var(--surface-2);border:1px solid var(--linha);border-radius:4px;padding:1px 5px;font-size:11.5px}
+.pasta{display:flex;gap:10px;align-items:flex-end;flex-wrap:wrap;padding:14px 16px}
+.pasta input{flex:1;min-width:340px;border:1px solid var(--linha-forte);border-radius:5px;padding:8px 10px;
+  font:inherit;font-family:Consolas,monospace;font-size:12.5px}
+.btn2{background:var(--azul);color:#fff;border:0;border-radius:5px;padding:9px 16px;cursor:pointer;
+  font-size:12.5px;font-weight:600}
+.btn2:hover{background:#18507f}
+.btn3{background:#fff;color:var(--azul);border:1px solid var(--linha-forte);border-radius:5px;
+  padding:9px 16px;cursor:pointer;font-size:12.5px;font-weight:600}
+.btn3:hover{background:var(--surface-2)}
+.dropzone{margin:0 16px 14px;border:2px dashed var(--linha-forte);border-radius:8px;padding:18px 16px;
+  text-align:center;color:var(--txt-3);background:var(--surface-2);transition:border-color .15s,background .15s}
+.dropzone.arrastando{border-color:var(--azul);background:var(--azul-claro);color:var(--azul)}
+.dropzone .btn2{margin-top:8px}
+</style>
+</head>
+<body>
+
+<header class="topo">
+  <div><h1>CRONOGRAMA MOLDETERM</h1><div class="sub" id="subtitulo">carregando...</div></div>
+  <div class="espaco"></div>
+  <button class="btn vazado" onclick="irPara('apont')">Importar apontamentos</button>
+  <button class="btn" onclick="carregar()">Recarregar</button>
+</header>
+
+<div class="kpis" id="kpis"></div>
+
+<div class="abas">
+  <button class="aba ativa" data-aba="gantt">Cronograma</button>
+  <button class="aba" data-aba="apont">Apontamentos do ERP <span class="selo" id="seloAp" hidden>!</span></button>
+  <button class="aba" data-aba="nova">Planejar HM nova</button>
+  <button class="aba" data-aba="cap">Carga por setor</button>
+  <button class="aba" data-aba="comp">Planilha da HM × cronograma</button>
+  <button class="aba" data-aba="plan">Resumo e premissas</button>
+  <button class="aba" data-aba="pend">Pendências <span class="selo" id="seloPend" hidden>0</span></button>
+</div>
+
+<section id="pnl-gantt">
+  <div class="filtros">
+    <div class="campo"><label>HM</label><select id="fHm"></select></div>
+    <div class="campo"><label>Setor</label><select id="fSetor"></select></div>
+    <div class="campo"><label>Buscar item</label><input id="fTxt" placeholder="macho, caixa, MD01..."></div>
+    <div class="campo"><label>Escala</label>
+      <div class="mini" id="escala">
+        <button data-e="dia" class="on">Dia</button><button data-e="semana">Semana</button><button data-e="mes">Mês</button>
+      </div></div>
+    <button class="link" onclick="expandir(1)">Abrir HMs</button>
+    <button class="link" onclick="expandir(2)">Abrir itens</button>
+    <button class="link" onclick="expandir(0)">Recolher</button>
+    <button class="link" onclick="exportarCSV()">Exportar (CSV)</button>
+  </div>
+  <div class="painel">
+    <div id="avisos"></div>
+    <div class="quadro">
+      <div class="rolagem" id="rolagem"><div class="cab" id="cab"></div><div id="linhas"></div></div>
+      <div class="legenda">
+        <span><i class="st-plan"></i>Programado</span>
+        <span><i class="st-real"></i>Realizado (apontado no ERP)</span>
+        <span><i class="vazio"></i>Espaço do realizado, ainda sem apontamento</span>
+        <span><i class="st-curta"></i>Janela mais curta que a capacidade do setor</span>
+        <span><i class="st-cron"></i>Sem quebra por item</span>
+        <span style="margin-left:auto">Clique no setor para abrir a grade hora a hora</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="pnl-apont" hidden><div class="painel" id="apont"></div></section>
+<section id="pnl-nova" hidden><div class="painel" id="nova"></div></section>
+<section id="pnl-cap" hidden><div class="painel" id="cap"></div></section>
+<section id="pnl-comp" hidden><div class="painel" id="comp"></div></section>
+<section id="pnl-plan" hidden><div class="painel" id="plan"></div></section>
+<section id="pnl-pend" hidden><div class="painel" id="pend"></div></section>
+
+<script>
+let D=null, ARVORE=[], ABERTOS=new Set(), MICRO=new Set(), ESCALA='dia', T0=null, T1=null, INIC=false;
+let NOVAS=null, PLANO=null, PLANO_SETOR=null;
+const LARG={dia:27,semana:9.5,mes:3.4};
+const MESES=['jan','fev','mar','abr','mai','jun','jul','ago','set','out','nov','dez'];
+const DSEM=['dom','seg','ter','qua','qui','sex','sáb'];
+
+const d=s=>{const[a,m,g]=s.split('-').map(Number);return new Date(a,m-1,g)};
+const dif=(a,b)=>Math.round((d(b)-d(a))/86400000);
+const soma=(s,n)=>{const x=d(s);x.setDate(x.getDate()+n);
+  return x.getFullYear()+'-'+String(x.getMonth()+1).padStart(2,'0')+'-'+String(x.getDate()).padStart(2,'0')};
+const br=s=>s?s.split('-').reverse().join('/'):'—';
+const fds=s=>{const w=d(s).getDay();return w===0||w===6};
+const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const n1=v=>(Math.round(v*10)/10).toLocaleString('pt-BR',{minimumFractionDigits:1,maximumFractionDigits:1});
+const n2=v=>(Math.round(v*100)/100).toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2});
+
+async function carregar(){
+  document.getElementById('subtitulo').textContent='lendo os arquivos...';
+  D=await (await fetch('/api/dados',{cache:'no-store'})).json();
+  if(D.erro){document.getElementById('avisos').innerHTML=`<div class="aviso erro"><b>Erro:</b> ${esc(D.erro)}</div>`;return;}
+  D.fer=new Set(D.feriados||[]);
+  const ap=D.apontamentos||{diagnostico:{}};
+  document.getElementById('subtitulo').textContent=
+    `${D.hms.length} HMs · ${D.atividades.length} linhas · horas × ${n2(D.fator_total)} `
+    +(ap.diagnostico.arquivo?`· apontado: ${esc(ap.diagnostico.arquivo)} (${n1(ap.total)} h)`
+                            :'· sem apontamentos importados');
+  filtros(); render(); apontPainel(); capacidade(); comparativo(); planilha(); pendencias();
+  NOVAS=null; PLANO=null; PLANO_SETOR=null;
+  if(!document.getElementById('pnl-nova').hidden)novasPainel();
+}
+
+function irPara(aba){
+  document.querySelectorAll('.aba').forEach(x=>x.classList.toggle('ativa',x.dataset.aba===aba));
+  ['gantt','apont','nova','cap','comp','plan','pend'].forEach(p=>
+    document.getElementById('pnl-'+p).hidden=(p!==aba));
+  window.scrollTo(0,0);
+  if(aba==='nova'&&!NOVAS)novasPainel();
+}
+
+function filtros(){
+  const enche=(id,vals,rot)=>{const s=document.getElementById(id),at=s.value;
+    s.innerHTML=`<option value="">${rot}</option>`+[...new Set(vals)].filter(Boolean).sort()
+      .map(v=>`<option>${esc(v)}</option>`).join('');
+    if([...s.options].some(o=>o.value===at))s.value=at;};
+  enche('fHm',D.atividades.map(a=>a.hm),'Todas as HMs');
+  enche('fSetor',D.atividades.map(a=>a.setor),'Todos os setores');
+}
+const v=id=>document.getElementById(id).value;
+
+function filtradas(){
+  const q=document.getElementById('fTxt').value.trim().toLowerCase();
+  return D.atividades.filter(a=>(!v('fHm')||a.hm===v('fHm'))&&(!v('fSetor')||a.setor===v('fSetor'))
+    &&(!q||(a.hm+' '+a.item+' '+a.setor+' '+a.recurso).toLowerCase().includes(q)));
+}
+
+// ---------------------------------------------------------------- arvore
+function arvore(ats){
+  const raiz=[],mh=new Map();
+  for(const a of ats){
+    if(!mh.has(a.hm)){const n={nivel:0,nome:a.hm,chave:a.hm,filhos:[],mapa:new Map(),ats:[]};
+      mh.set(a.hm,n);raiz.push(n);}
+    const H=mh.get(a.hm); H.ats.push(a);
+    const ck=a.hm+'§'+a.item;
+    if(!H.mapa.has(ck)){const n={nivel:1,nome:a.item,chave:ck,filhos:[],ats:[]};H.mapa.set(ck,n);H.filhos.push(n);}
+    const I=H.mapa.get(ck); I.ats.push(a);
+    I.filhos.push({nivel:2,nome:a.setor+(a.recurso&&a.recurso!==a.setor?' · '+a.recurso:''),
+                   chave:a.id,filhos:[],ats:[a],at:a});
+  }
+  const calc=n=>{n.ini=null;n.fim=null;n.horas=0;n.realizado=0;n.rini=null;n.rfim=null;
+    n.curta=false;n.cron=true;
+    for(const a of n.ats){
+      if(a.inicio){n.ini=!n.ini||a.inicio<n.ini?a.inicio:n.ini;
+        n.fim=!n.fim||a.fim>n.fim?a.fim:n.fim;}
+      if(a.ap_inicio){n.rini=!n.rini||a.ap_inicio<n.rini?a.ap_inicio:n.rini;
+        n.rfim=!n.rfim||a.ap_fim>n.rfim?a.ap_fim:n.rfim;}
+      n.horas+=a.horas; n.realizado+=a.realizado||0;
+      if(a.excede_capacidade)n.curta=true; if(a.fonte_horas==='PLANILHA HM')n.cron=false;}
+    n.filhos.forEach(calc); return n;};
+  raiz.forEach(calc); return raiz;
+}
+
+function render(){
+  const ats=filtradas(); ARVORE=arvore(ats); kpis(ats);
+  document.getElementById('avisos').innerHTML=(D.avisos||[]).map(a=>`<div class="aviso">${esc(a)}</div>`).join('');
+  const cd=ats.filter(a=>a.inicio);
+  if(!cd.length){document.getElementById('cab').innerHTML='';
+    document.getElementById('linhas').innerHTML='<div class="vazio">Nada no filtro atual.</div>';return;}
+  T0=cd.reduce((m,a)=>a.inicio<m?a.inicio:m,cd[0].inicio);
+  T1=cd.reduce((m,a)=>a.fim>m?a.fim:m,cd[0].fim);
+  ats.forEach(a=>{if(a.ap_inicio&&a.ap_inicio<T0)T0=a.ap_inicio;
+                  if(a.ap_fim&&a.ap_fim>T1)T1=a.ap_fim;});
+  D.hms.forEach(h=>{if(h.entrega&&h.entrega>T1)T1=h.entrega});
+  T0=soma(T0,-2); T1=soma(T1,3);
+  cabecalho();
+  if(!INIC){ARVORE.forEach(n=>ABERTOS.add(n.chave));INIC=true;}
+  const out=[]; const anda=ns=>{for(const n of ns){out.push(linhaHtml(n));
+    if(n.nivel===2&&MICRO.has(n.chave))out.push(microHtml(n.at));
+    if(n.filhos.length&&ABERTOS.has(n.chave))anda(n.filhos);}};
+  anda(ARVORE);
+  document.getElementById('linhas').innerHTML=out.join('');
+  document.querySelectorAll('#linhas .linha[data-chave]').forEach(el=>el.onclick=()=>{
+    const k=el.dataset.chave, n=buscar(k);
+    if(n&&n.nivel===2){MICRO.has(k)?MICRO.delete(k):MICRO.add(k);}
+    else {ABERTOS.has(k)?ABERTOS.delete(k):ABERTOS.add(k);}
+    render();});
+}
+const L=()=>LARG[ESCALA], ND=()=>dif(T0,T1)+1;
+
+function cabecalho(){
+  const l=L(),n=ND(),W=n*l; let meses='',dias='',mA=null,iM=0;
+  const rot=k=>{const[a,m]=k.split('-').map(Number);return MESES[m]+'/'+String(a).slice(2)};
+  for(let i=0;i<n;i++){const s=soma(T0,i),dt=d(s),k=dt.getFullYear()+'-'+dt.getMonth();
+    if(k!==mA){if(mA!==null)meses+=`<span style="left:${iM*l}px;width:${(i-iM)*l}px">${rot(mA)}</span>`;mA=k;iM=i;}
+    if(ESCALA==='dia'){const c=s===D.hoje?'hj':(D.fer.has(s)?'fer':(fds(s)?'fds':''));
+      dias+=`<span class="${c}" style="left:${i*l}px;width:${l}px" title="${br(s)}">${dt.getDate()}</span>`;}
+    else if(ESCALA==='semana'&&dt.getDay()===1)
+      dias+=`<span style="left:${i*l}px;width:${7*l}px;border-left:1px solid var(--linha)">${dt.getDate()}/${dt.getMonth()+1}</span>`;}
+  meses+=`<span style="left:${iM*l}px;width:${(n-iM)*l}px">${rot(mA)}</span>`;
+  document.getElementById('cab').innerHTML=`<div class="linha"><div class="rotulo">HM · Item · Setor</div>
+    <div class="trilho" style="width:${W}px;flex:0 0 ${W}px"><div class="faixa-mes">${meses}</div>
+    <div class="faixa-dia">${dias}</div></div></div>`;
+}
+
+function linhaHtml(no){
+  const l=L(),n=ND(),W=n*l, folha=no.nivel===2, at=no.at;
+  let fundo='';
+  if(ESCALA==='dia')for(let i=0;i<n;i++){const s=soma(T0,i);
+    if(D.fer.has(s))fundo+=`<div class="fer" style="left:${i*l}px;width:${l}px"></div>`;
+    else if(fds(s))fundo+=`<div class="fds" style="left:${i*l}px;width:${l}px"></div>`;}
+
+  let barras='';
+  if(no.ini){
+    const x=dif(T0,no.ini)*l, w=Math.max(l*0.6,(dif(no.ini,no.fim)+1)*l);
+    const cls=no.curta?'st-curta':(no.cron?'st-cron':'st-plan');
+    barras+=`<div class="barra b-prog ${cls}" style="left:${x}px;width:${w}px"
+       title="Programado: ${n1(no.horas)} h de ${br(no.ini)} a ${br(no.fim)}"></div>`;
+    if(ESCALA!=='mes'){
+      let r=`${n1(no.horas)} h`;
+      if(folha)r+=` · ${n1(at.h_dia)} h/dia de ${n1(at.cap_dia)}`;
+      else r+=` · ${br(no.ini)} a ${br(no.fim)}`;
+      barras+=`<div class="rot-barra rot-prog" style="left:${x+w+7}px">${r}</div>`;
+    }
+    // segunda linha: realizado (ou o espaco reservado dele)
+    if(no.rini){
+      const xr=dif(T0,no.rini)*l, wr=Math.max(l*0.6,(dif(no.rini,no.rfim)+1)*l);
+      barras+=`<div class="barra b-real st-real" style="left:${xr}px;width:${wr}px"
+         title="Realizado: ${n1(no.realizado)} h de ${br(no.rini)} a ${br(no.rfim)}"></div>`;
+      if(ESCALA!=='mes'){
+        const pct=no.horas?Math.round(no.realizado/no.horas*100):0;
+        barras+=`<div class="rot-barra rot-real" style="left:${xr+wr+7}px">${n1(no.realizado)} h · ${pct}% do programado</div>`;
+      }
+    }else{
+      barras+=`<div class="b-vazia" style="left:${x}px;width:${w}px"></div>`;
+      if(ESCALA!=='mes')
+        barras+=`<div class="rot-barra rot-real" style="left:${x+w+7}px;color:var(--txt-3)">sem apontamento</div>`;
+    }
+  }
+  const q=no.filhos.length, temF=q>0||folha, ab=folha?MICRO.has(no.chave):ABERTOS.has(no.chave);
+  const cnt=no.nivel===0?`${q} item${q===1?'':'s'}`:no.nivel===1?`${q} setor${q===1?'':'es'}`
+    :(at.fonte_horas==='PLANILHA HM'?`${n1(at.horas_base)} h base`:'cronograma');
+  return `<div class="linha n${no.nivel}" data-chave="${esc(no.chave)}">
+    <div class="rotulo" style="padding-left:${8+no.nivel*13}px">
+      <span class="seta">${temF?(ab?'▼':'▶'):'·'}</span>
+      <span class="txt" title="${esc(no.nome)}">${esc(no.nome)}</span><span class="cnt">${esc(cnt)}</span></div>
+    <div class="trilho" style="width:${W}px;flex:0 0 ${W}px">${fundo}${barras}</div></div>`;
+}
+
+// ---------------------------------------------------------------- grades hora a hora
+function gradeHtml(grade,cor,rotulo){
+  if(!grade||!grade.length)return `<div style="font-size:12px;color:var(--txt-3);padding:6px 0">
+    ${rotulo}</div>`;
+  let h0=23,h1=0;
+  grade.forEach(x=>Object.keys(x.celulas).forEach(h=>{if(h==='s')return;h=+h;
+    h0=Math.min(h0,h);h1=Math.max(h1,h)}));
+  if(h0>h1){h0=7;h1=17;}
+  const vals=grade.flatMap(x=>Object.entries(x.celulas).filter(([k])=>k!=='s').map(([,v])=>v));
+  const max=Math.max(...vals,0.001);
+  let th=`<th class="dia">Dia</th>`;
+  for(let h=h0;h<=h1;h++)th+=`<th>${String(h).padStart(2,'0')}</th>`;
+  th+='<th>Total</th>';
+  const linhas=grade.map(x=>{
+    let tds=`<td class="dia">${br(x.data).slice(0,5)} ${DSEM[d(x.data).getDay()]}</td>`;
+    for(let h=h0;h<=h1;h++){const val=x.celulas[h]||0;
+      if(!val){tds+='<td></td>';continue;}
+      const a=(.25+(val/max)*.7).toFixed(2);
+      tds+=`<td><div class="cel" style="background:rgba(${cor},${a})"
+        title="${String(h).padStart(2,'0')}:00 — ${n2(val)}">${val>=0.6?n1(val):''}</div></td>`;}
+    const tot=Object.values(x.celulas).reduce((s,v)=>s+v,0);
+    return `<tr>${tds}<td class="tot">${n2(tot)} h</td></tr>`;});
+  return `<div class="grade"><table><thead><tr>${th}</tr></thead><tbody>${linhas.join('')}</tbody></table></div>`;
+}
+
+function microHtml(at){
+  const aps=at.apont||[];
+  const cab=`<div class="cabec">
+      <b>${esc(at.setor)}${at.recurso?' · '+esc(at.recurso):''}</b>
+      <span>${esc(at.hm)} · ${esc(at.item)}</span>
+      <span>programado <b>${n1(at.horas)} h</b> em ${at.dias_uteis} dias úteis = <b>${n1(at.h_dia)} h/dia</b></span>
+      ${at.realizado?`<span style="color:var(--vermelho)">realizado <b>${n1(at.realizado)} h</b>
+        (${br(at.ap_inicio)} a ${br(at.ap_fim)})</span>`:'<span>sem apontamento importado</span>'}
+      <span>capacidade ${n1(at.cap_dia)} h/dia — ${esc(at.composicao)}</span>
+      <span>turno ${esc((at.calendarios||[]).join(' + '))}</span>
+      ${at.excede_capacidade?'<span class="tag t-pre">janela mais curta que a capacidade</span>':''}
+    </div>`;
+  const proc=Object.keys(at.processos||{}).length?`<div style="font-size:11.5px;color:var(--txt-2)">
+      Processos deste item no setor: ${Object.entries(at.processos).map(([p,h])=>
+        `${esc(p)} <b>${n1(h)} h</b>`).join(' · ')}</div>`:'';
+  return `<div class="micro"><div class="caixa">${cab}${proc}
+    <h4>Programado — hora a hora</h4>
+    ${gradeHtml(at.grade,'31,95,168','Sem janela de datas para este setor.')}
+    <h4 class="real">Realizado — hora a hora (apontado no ERP)</h4>
+    ${gradeHtml(at.grade_real,'176,42,36',
+       'Nenhuma hora apontada ainda para este item neste setor. Assim que você importar a planilha do ERP, a grade vermelha aparece aqui.')}
+    <div style="font-size:11px;color:var(--txt-3);margin-top:7px">
+      Na grade azul, cada célula é quantos recursos do setor estão programados naquela hora. Na vermelha, são as
+      horas realmente apontadas.</div>
+    ${aps.length?`<h4 class="real">Lançamentos do ERP (${aps.length})</h4>
+      <table class="dados"><thead><tr><th>Data</th><th>Início</th><th>Fim</th><th>Processo</th>
+      <th>Operador</th><th class="num">Horas</th></tr></thead><tbody>
+      ${aps.map(a=>`<tr><td>${br(a.data)}</td><td>${a.hi||'—'}</td><td>${a.hf||'—'}</td>
+        <td class="txt">${esc(a.processo)}</td><td class="txt">${esc(a.operador)}</td>
+        <td class="num">${n2(a.horas)}</td></tr>`).join('')}</tbody></table>`:''}
+    </div></div>`;
+}
+
+function buscar(k,ns=ARVORE){for(const n of ns){if(n.chave===k)return n;const r=buscar(k,n.filhos);if(r)return r;}return null;}
+function expandir(nivel){
+  ABERTOS=new Set(); MICRO=new Set();
+  if(nivel>=1)ARVORE.forEach(n=>ABERTOS.add(n.chave));
+  if(nivel>=2)ARVORE.forEach(n=>n.filhos.forEach(f=>ABERTOS.add(f.chave)));
+  render();
+}
+
+function kpis(ats){
+  const tot=ats.reduce((s,a)=>s+a.horas,0), base=ats.reduce((s,a)=>s+(a.horas_base||0),0);
+  const rea=ats.reduce((s,a)=>s+(a.realizado||0),0);
+  const curtas=ats.filter(a=>a.excede_capacidade).length;
+  const fim=ats.reduce((m,a)=>a.fim>m?a.fim:m,'');
+  const ap=D.apontamentos||{diagnostico:{}};
+  document.getElementById('kpis').innerHTML=
+    kpi('Horas programadas',n1(tot)+' h',`base ${n1(base)} h × ${n2(D.fator_total)}`)+
+    kpi('Horas realizadas',n1(rea)+' h',tot?`${Math.round(rea/tot*100)}% do programado`:'—',false,true)+
+    kpi('Saldo a realizar',n1(Math.max(0,tot-rea))+' h',rea?'do que está no filtro':'nada apontado ainda')+
+    kpi('Última entrega',br(fim),'fim da última atividade')+
+    kpi('Janelas curtas',String(curtas),curtas?'setor acima da capacidade':'todas cabem',curtas>0)+
+    kpi('Horas sem casar',n1(ap.horas_orfas||0)+' h',(ap.horas_orfas?'ver aba Apontamentos':'tudo casou'),
+        (ap.horas_orfas||0)>0);
+}
+const kpi=(r,v,o,al,real)=>`<div class="kpi ${al?'alerta':''} ${real?'real':''}">
+  <div class="rot">${r}</div><div class="val">${v}</div><div class="obs">${o}</div></div>`;
+
+// ---------------------------------------------------------------- aba apontamentos
+async function salvarPasta(){
+  const pasta=document.getElementById('inPasta').value;
+  const r=await (await fetch('/api/pasta',{method:'POST',headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({pasta})})).json();
+  if(!r.ok){alert('Não consegui salvar: '+(r.erro||''));return;}
+  await carregar(); irPara('apont');
+  if(r.aviso)alert(r.aviso);
+}
+
+async function enviarArquivo(file){
+  if(!file)return;
+  const ext=(file.name.split('.').pop()||'').toLowerCase();
+  if(!['xlsx','csv','txt'].includes(ext)){alert('Envie um arquivo .xlsx, .csv ou .txt.');return;}
+  try{
+    const r=await (await fetch('/api/upload-apontamentos',{method:'POST',
+      headers:{'Content-Type':'application/octet-stream','X-Nome-Arquivo':encodeURIComponent(file.name)},
+      body:file})).json();
+    if(!r.ok){alert('Não consegui importar: '+(r.erro||''));return;}
+    await carregar(); irPara('apont');
+  }catch(e){alert('Não consegui importar: '+e.message);}
+}
+function arquivoEscolhido(input){enviarArquivo(input.files[0]);input.value='';}
+function dropArquivo(ev){
+  ev.preventDefault();
+  document.getElementById('zonaDrop').classList.remove('arrastando');
+  enviarArquivo(ev.dataTransfer.files[0]);
+}
+function dragOverZona(ev){ev.preventDefault();document.getElementById('zonaDrop').classList.add('arrastando');}
+function dragLeaveZona(ev){document.getElementById('zonaDrop').classList.remove('arrastando');}
+
+function apontPainel(){
+  const ap=D.apontamentos||{diagnostico:{}}, g=ap.diagnostico||{};
+  const cfg=(D.config||{}).pasta_apontamentos||'';
+  document.getElementById('seloAp').hidden=!(ap.horas_orfas||g.processos_desconhecidos||[]).length;
+
+  let estado;
+  if(!g.arquivo){
+    estado=`<div class="aviso">${esc(g.mensagem||'Nenhuma planilha de apontamentos encontrada.')}</div>`;
+  }else{
+    estado=`<div class="aviso ok"><b>Lendo:</b> ${esc(g.arquivo)} — atualizado em ${esc(g.atualizado_em||'')} ·
+      ${g.lancamentos} lançamentos · ${n1(g.horas_total)} h
+      ${g.ignoradas?` · ${g.ignoradas} linha(s) ignorada(s) por falta de data ou de horas`:''}
+      <div style="font-size:11.5px;margin-top:4px">${esc(g.caminho||'')}</div></div>`;
+    if(g.exemplo)estado+=`<div class="aviso"><b>Atenção:</b> este arquivo é o EXEMPLO que veio junto com o
+      programa, com horas fictícias, só para você ver a tela funcionando. Apague
+      <code>dados/apontamentos_EXEMPLO.xlsx</code> quando tiver o export de verdade.</div>`;
+  }
+  if(g.erro_pasta)estado+=`<div class="aviso erro">${esc(g.erro_pasta)}</div>`;
+
+  const naoRec=(g.colunas_nao_encontradas||[]).filter(c=>!['projeto','conjunto'].includes(c));
+  document.getElementById('apont').innerHTML=`
+    <div class="quadro"><h2>Onde o programa procura a planilha do ERP</h2>
+      <div class="pasta">
+        <div style="flex:1;min-width:340px">
+          <div style="font-size:10.5px;text-transform:uppercase;letter-spacing:.06em;color:var(--txt-3);
+            font-weight:600;margin-bottom:4px">Pasta onde você salva o export</div>
+          <input id="inPasta" value="${esc(cfg)}"
+            placeholder="C:\\Users\\Jonas\\Documents\\Apontamentos ERP">
+        </div>
+        <button class="btn2" onclick="salvarPasta()">Salvar pasta e importar</button>
+        <button class="btn3" onclick="carregar()">Importar agora</button>
+        <a class="btn3" href="/modelo" style="text-decoration:none;display:inline-block">Baixar modelo de planilha</a>
+      </div>
+      <div class="nota">Cole aqui o caminho da pasta onde o ERP salva o arquivo (abra a pasta no Explorador,
+        clique na barra de endereço, copie e cole aqui). O programa pega sempre o arquivo <b>mais recente</b>
+        dessa pasta cujo nome comece com <code>apontamentos</code> — .xlsx ou .csv. Toda vez que você clicar em
+        Recarregar, ele lê de novo o que estiver lá. Se a pasta ficar em branco, ele usa a pasta
+        <code>dados</code> aqui de dentro do programa.</div>
+      <div id="zonaDrop" class="dropzone" ondragover="dragOverZona(event)" ondragleave="dragLeaveZona(event)"
+        ondrop="dropArquivo(event)">
+        <div>Arraste aqui a planilha de apontamentos (.xlsx ou .csv)</div>
+        <div style="margin:4px 0;font-size:11px">ou</div>
+        <button class="btn2" type="button" onclick="document.getElementById('inArquivoAp').click()">Escolher arquivo do computador</button>
+        <input type="file" id="inArquivoAp" accept=".xlsx,.csv,.txt" style="display:none" onchange="arquivoEscolhido(this)">
+      </div>
+      <div class="nota"><b>Fase de teste:</b> importe manualmente o arquivo exportado do ERP arrastando-o para a
+        área acima ou escolhendo-o do computador. O programa grava como <code>apontamentos_...</code>
+        ${cfg?'na pasta configurada acima':'na pasta <code>dados</code> do programa'} e recarrega sozinho — não
+        precisa clicar em "Importar agora" depois.</div>
+    </div>
+    <div class="painel" style="padding:0">${estado}</div>
+    ${g.arquivo?`
+    <div class="quadro"><h2>Conferência da importação</h2>
+      <table class="dados"><thead><tr><th>Campo do cronograma</th><th>Coluna encontrada na sua planilha</th></tr></thead>
+      <tbody>
+      ${Object.entries(g.colunas_reconhecidas||{}).map(([k,v])=>`<tr><td class="txt"><code>${esc(k)}</code></td>
+        <td class="txt" style="color:var(--verde)">${esc(v)}</td></tr>`).join('')}
+      ${naoRec.map(k=>`<tr><td class="txt"><code>${esc(k)}</code></td>
+        <td class="txt" style="color:var(--vermelho)">não encontrada — escreva o nome da sua coluna em
+        mapeamento.json</td></tr>`).join('')}
+      </tbody></table>
+      <div class="nota">Cabeçalho reconhecido na linha ${g.linha_cabecalho} da planilha.
+        Horas casadas com o cronograma: <b>${n1(ap.casados||0)} h</b> de ${n1(g.horas_total||0)} h.</div>
+    </div>
+    ${(g.processos_desconhecidos||[]).length?`
+    <div class="quadro"><h2>Processos que o programa não reconheceu</h2>
+      <table class="dados"><thead><tr><th>Processo na sua planilha</th><th class="num">Linhas</th>
+        <th>O que fazer</th></tr></thead><tbody>
+      ${g.processos_desconhecidos.map(p=>`<tr><td class="txt"><b>${esc(p.processo)}</b></td>
+        <td class="num">${p.linhas}</td><td class="txt">Acrescente uma linha em
+        <code>base/de_para_erp_setor.csv</code> dizendo a que setor do cronograma ele corresponde</td></tr>`).join('')}
+      </tbody></table></div>`:''}
+    ${(ap.orfaos||[]).length?`
+    <div class="quadro"><h2>Lançamentos que não casaram (${ap.orfaos.length} · ${n1(ap.horas_orfas)} h)</h2>
+      <table class="dados"><thead><tr><th>Data</th><th>HM</th><th>Item</th><th>Processo</th>
+        <th class="num">Horas</th><th>Por quê</th></tr></thead><tbody>
+      ${ap.orfaos.slice(0,300).map(o=>`<tr><td>${br(o.data)}</td><td class="txt">${esc(o.hm_erp)}</td>
+        <td class="txt">${esc(o.item_erp)}</td><td class="txt">${esc(o.processo)}</td>
+        <td class="num">${n2(o.horas)}</td><td class="txt">${esc(o.motivo)}</td></tr>`).join('')}
+      </tbody></table>
+      ${ap.orfaos.length>300?'<div class="nota">Mostrando os 300 primeiros.</div>':''}</div>`:''}
+    `:''}
+    <div class="quadro"><h2>Como deve vir a planilha</h2>
+      <table class="dados"><thead><tr><th>Coluna</th><th>O que é</th></tr></thead><tbody>
+      <tr><td class="txt"><b>Data</b></td><td class="txt">Dia do apontamento. Obrigatória.</td></tr>
+      <tr><td class="txt"><b>Hora Inicial</b></td><td class="txt">hh:mm. É ela que permite montar a grade hora a hora.</td></tr>
+      <tr><td class="txt"><b>Hora Final</b></td><td class="txt">hh:mm. Com ela o programa calcula as horas sozinho.</td></tr>
+      <tr><td class="txt"><b>HM</b></td><td class="txt">Pode vir como HM 024, HM024, 2026-024 ou só 024.</td></tr>
+      <tr><td class="txt"><b>Item</b></td><td class="txt">Pode ser só o código: CX02B, CX01A, MD01. Se vier vazio, a hora entra no setor sem quebra por item.</td></tr>
+      <tr><td class="txt"><b>Processo</b></td><td class="txt">CNC GRANDE, AJUSTAGEM, CAM, PROJETOS, SOLDAGEM... Obrigatória.</td></tr>
+      <tr><td class="txt"><b>Operador</b></td><td class="txt">Opcional.</td></tr>
+      <tr><td class="txt"><b>Horas</b></td><td class="txt">Opcional se vierem hora inicial e final.</td></tr>
+      </tbody></table>
+      <div class="nota">A ordem das colunas não importa e os nomes podem variar — o programa reconhece sinônimos
+        (OS, Ordem de Serviço, Colaborador, Tempo Realizado...). Clique em <b>Baixar modelo de planilha</b> e
+        mande esse arquivo para quem gera o export do ERP.</div>
+    </div>`;
+}
+
+// ---------------------------------------------------------------- planejar HM nova
+async function novasPainel(){
+  const el=document.getElementById('nova');
+  el.innerHTML='<div class="quadro"><div class="nota">Lendo as planilhas de HM...</div></div>';
+  const r=await (await fetch('/api/novas',{cache:'no-store'})).json();
+  if(r.erro){el.innerHTML=`<div class="aviso erro">${esc(r.erro)}</div>`;return;}
+  NOVAS=r.hms||[];
+  const fora=NOVAS.filter(h=>!h.no_cronograma), dentro=NOVAS.filter(h=>h.no_cronograma);
+  const hoje=D.hoje;
+  const linha=h=>{
+    const sug=h.entrega_sugerida||'';
+    return `<tr><td class="txt"><b>${esc(h.hm)}</b></td><td class="txt">${esc(h.cliente)}</td>
+      <td class="txt">${esc(h.pn)}</td><td class="num">${n1(h.horas_base)} h</td>
+      <td>${br(sug)}</td>
+      <td>${h.no_cronograma?'<span class="tag t-ok">já está no cronograma</span>'
+        :'<span class="tag t-pre">fora do cronograma</span>'}</td>
+      <td>${h.horas_base>0?`<button class="btn3" onclick="prepararHM('${esc(h.hm)}')">Planejar</button>`
+        :'<span style="color:var(--txt-3);font-size:11.5px">planilha sem horas</span>'}</td></tr>`;};
+  el.innerHTML=`
+    <div class="quadro"><h2>HMs com planilha importada</h2>
+      <table class="dados"><thead><tr><th>HM</th><th>Cliente</th><th>PN</th><th class="num">Horas base</th>
+        <th>Entrega da planilha</th><th>Situação</th><th></th></tr></thead><tbody>
+      ${fora.concat(dentro).map(linha).join('')}</tbody></table>
+      <div class="nota">A entrega vem do <b>TARGET Final</b> do RFQ Summary da própria planilha da HM —
+        quando há data do fornecedor, é ela; se não, a data Tupy. Para trazer uma HM nova: coloque o arquivo
+        em <code>pedidos/hms</code>, rode o <code>IMPORTAR_HMS</code> e clique em Recarregar.
+      ${NOVAS.filter(h=>h.avisos).map(h=>`<div style="color:var(--vermelho);margin-top:5px">
+        ${esc(h.hm)}: ${esc(h.avisos)}</div>`).join('')}</div>
+    </div>
+    <div class="quadro" id="formNova" hidden><h2>Planejar</h2>
+      <div class="pasta">
+        <div><div style="font-size:10.5px;text-transform:uppercase;letter-spacing:.06em;color:var(--txt-3);
+          font-weight:600;margin-bottom:4px">HM</div>
+          <input id="pHm" readonly style="min-width:110px;font-weight:700;background:var(--surface-2)"></div>
+        <div><div style="font-size:10.5px;text-transform:uppercase;letter-spacing:.06em;color:var(--txt-3);
+          font-weight:600;margin-bottom:4px">Liberação (início do projeto)</div>
+          <input id="pLib" type="date" style="min-width:150px" value="${hoje}"></div>
+        <div><div style="font-size:10.5px;text-transform:uppercase;letter-spacing:.06em;color:var(--txt-3);
+          font-weight:600;margin-bottom:4px">Data de entrega</div>
+          <input id="pEnt" type="date" style="min-width:150px"></div>
+        <div><div style="font-size:10.5px;text-transform:uppercase;letter-spacing:.06em;color:var(--txt-3);
+          font-weight:600;margin-bottom:4px">Prioridade</div>
+          <select id="pPri" style="min-width:120px;border:1px solid var(--linha-forte);border-radius:5px;
+            padding:8px 10px;font:inherit">
+            <option>Crítica</option><option selected>Alta</option><option>Normal</option></select></div>
+        <button class="btn2" onclick="simularHM()">Calcular as janelas</button>
+      </div>
+    </div>
+    <div id="resultadoNova"></div>`;
+  if(fora.length===1&&fora[0].horas_base>0)prepararHM(fora[0].hm);
+}
+
+function prepararHM(hm){
+  const h=NOVAS.find(x=>x.hm===hm); if(!h)return;
+  document.getElementById('formNova').hidden=false;
+  document.getElementById('pHm').value=hm;
+  document.getElementById('pEnt').value=h.entrega_sugerida||'';
+  if(h.liberacao_sugerida&&h.liberacao_sugerida>D.hoje)
+    document.getElementById('pLib').value=h.liberacao_sugerida;
+  document.getElementById('formNova').scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+
+async function simularHM(){
+  const body={hm:document.getElementById('pHm').value,
+              entrega:document.getElementById('pEnt').value,
+              liberacao:document.getElementById('pLib').value,
+              prioridade:document.getElementById('pPri').value};
+  const el=document.getElementById('resultadoNova');
+  el.innerHTML='<div class="quadro"><div class="nota">Calculando...</div></div>';
+  PLANO=await (await fetch('/api/planejar',{method:'POST',
+    headers:{'Content-Type':'application/json'},body:JSON.stringify(body)})).json();
+  if(PLANO.erro){el.innerHTML=`<div class="aviso erro">${esc(PLANO.erro)}</div>`;return;}
+  const p=PLANO;
+  const cab=p.cabe
+    ? `<div class="aviso ok"><b>Cabe no prazo.</b> Começando em ${br(p.inicio)}, a ${esc(p.hm)} fecha em
+       <b>${br(p.fim)}</b> — ${p.folga_dias} dia(s) de folga até a entrega de ${br(p.entrega)}.
+       O setor que define a data é <b>${esc(p.setor_critico)}</b>.</div>`
+    : `<div class="aviso erro"><b>Não cabe no prazo com a capacidade normal.</b> A ${esc(p.hm)} fecha em
+       <b>${br(p.fim)}</b>, ${Math.abs(p.folga_dias)} dia(s) depois da entrega de ${br(p.entrega)}.
+       O setor que segura é <b>${esc(p.setor_critico)}</b>. O cronograma não foi forçado — para encaixar seria
+       preciso hora extra, trocar recurso, terceirizar ou mudar a prioridade de outra HM.</div>`;
+  el.innerHTML=`${cab}
+    <div class="quadro"><h2>Janelas calculadas — ${esc(p.hm)} · ${n1(p.horas_total)} h
+      (base ${n1(p.base_total)} h × ${n2(p.fator)})</h2>
+      <table class="dados"><thead><tr><th>Setor</th><th>Recurso</th><th class="num">Horas</th>
+        <th>Início</th><th>Fim</th><th class="num">Dias úteis</th><th class="num">h/dia</th>
+        <th class="num">Capacidade</th><th class="num">Ocupação</th><th>Abre com</th></tr></thead><tbody>
+      ${p.setores.map(s=>{const oc=s.ocupacao_media||0;
+        const cor=oc>95?'var(--vermelho)':oc>80?'var(--ambar)':'var(--verde)';
+        return `<tr><td class="txt"><b>${esc(s.setor)}</b></td>
+        <td class="txt" style="font-size:11.5px">${esc(s.recurso)}</td>
+        <td class="num">${n1(s.horas)} h</td><td>${br(s.inicio)}</td><td>${br(s.fim)}</td>
+        <td class="num">${s.dias_uteis}</td><td class="num">${n2(s.h_dia)}</td>
+        <td class="num">${n1(s.cap_dia)}</td>
+        <td class="num" style="color:${cor};font-weight:600">${n1(oc)}%</td>
+        <td class="txt" style="font-size:11.5px">${esc(s.regra)}${s.dias_esperando?
+          ` · esperou ${s.dias_esperando} dia(s) por capacidade`:''}</td></tr>`;}).join('')}
+      </tbody></table>
+      <div class="nota">A ocupação é quanto da capacidade livre do setor a HM nova consome em média por dia.
+        As HMs que já estão no cronograma não foram mexidas — a nova ocupou só o que sobrava em cada dia.</div>
+    </div>
+    ${(p.avisos||[]).length?`<div class="aviso">${p.avisos.map(esc).join('<br>')}</div>`:''}
+    <div class="quadro"><h2>Regras de liberação parcial usadas</h2>
+      <table class="dados"><thead><tr><th>Setor</th><th>Abre depois de</th><th class="num">Com quanto</th>
+        <th>Origem</th><th>Observação</th></tr></thead><tbody>
+      ${p.roteiro_usado.map(x=>`<tr><td class="txt"><b>${esc(x.setor)}</b></td>
+        <td class="txt">${esc(x.pred||'— começa na liberação')}</td>
+        <td class="num">${x.pct?n1(x.pct)+'%':'—'}</td>
+        <td><span class="tag ${x.origem==='CADASTRADO'?'t-ok':'t-pre'}">${esc(x.origem)}</span></td>
+        <td class="txt" style="font-size:11.5px">${esc(x.obs)}</td></tr>`).join('')}
+      </tbody></table></div>
+    <div class="quadro"><div class="pasta">
+      <button class="btn2" onclick="gravarHM()">Gravar esta HM no cronograma</button>
+      <span style="font-size:12px;color:var(--txt-2)">Ele acrescenta as linhas na planilha
+        <code>cronograma_mestre.xlsx</code> e guarda uma cópia de segurança da versão anterior antes.</span>
+    </div></div>`;
+}
+
+async function gravarHM(){
+  if(!PLANO)return;
+  if(!confirm(`Gravar a ${PLANO.hm} no cronograma mestre?\n\n`
+    +`${PLANO.setores.length} linhas de setor + a linha de entrega.\n`
+    +`Uma cópia de segurança da planilha atual é guardada antes.`))return;
+  const body={hm:PLANO.hm,entrega:PLANO.entrega,liberacao:PLANO.liberacao,prioridade:PLANO.prioridade};
+  const r=await (await fetch('/api/gravar',{method:'POST',
+    headers:{'Content-Type':'application/json'},body:JSON.stringify(body)})).json();
+  if(!r.ok){alert('Não consegui gravar: '+(r.erro||''));return;}
+  alert(`Gravado. ${r.linhas} linhas acrescentadas.\nCópia de segurança: pedidos/backup/${r.backup}`);
+  await carregar(); irPara('gantt');
+}
+
+// ---------------------------------------------------------------- carga
+function capacidade(){
+  document.getElementById('cap').innerHTML=`<div class="quadro"><h2>Carga por setor</h2>
+    <table class="dados"><thead><tr><th>Setor</th><th>Composição</th><th class="num">Horas totais</th>
+      <th class="num">Capacidade/dia</th><th class="num">Pico/dia</th><th>Data do pico</th>
+      <th style="width:24%">Ocupação no pico</th><th>HMs</th></tr></thead><tbody>
+    ${D.carga_setor.map(c=>{const p=c.ocupacao_pico||0;
+      const cor=p>100?'var(--vermelho)':p>85?'var(--ambar)':'var(--azul)';
+      return `<tr><td class="txt"><b>${esc(c.setor)}</b></td>
+      <td class="txt" style="font-size:11.5px">${esc(c.composicao)}</td>
+      <td class="num">${n1(c.horas)} h</td><td class="num">${n1(c.cap_dia)} h</td>
+      <td class="num" style="color:${p>100?'var(--vermelho)':'inherit'};font-weight:600">${n2(c.pico_dia)} h</td>
+      <td>${br(c.pico_data)}</td>
+      <td><div class="barrinha"><div class="f" style="width:${Math.min(100,p)}%;background:${cor}"></div></div>
+        <span style="font-size:11px;color:${p>100?'var(--vermelho)':'var(--txt-3)'}">${n1(p)}%</span></td>
+      <td class="txt" style="font-size:11px">${c.hms.join(', ')}</td></tr>`;}).join('')}
+    </tbody></table>
+    <div class="nota"><b>Como ler o pico:</b> as horas de cada setor foram espalhadas por igual nos dias úteis
+      da janela do cronograma. Quando o pico passa de 100%, as HMs que se sobrepõem naquele dia pedem mais do
+      que o setor tem.</div></div>`;
+}
+
+function comparativo(){
+  const c=D.comparativo||[];
+  document.getElementById('comp').innerHTML=`<div class="quadro">
+    <h2>Horas da planilha da HM × horas do cronograma mestre</h2>
+    <table class="dados"><thead><tr><th>HM</th><th>Setor</th><th class="num">Itens</th>
+      <th class="num">Base (planilha)</th><th class="num">× ${n2(D.fator_calibracao)} calibrada</th>
+      <th class="num">× ${n2(D.fator_total)} no cronograma</th><th class="num">Cronograma mestre</th>
+      <th class="num">Desvio calibrada − mestre</th></tr></thead><tbody>
+    ${c.map(x=>{const dv=x.desvio, cor=Math.abs(dv)<1?'var(--verde)':dv>0?'var(--vermelho)':'var(--ambar)';
+      return `<tr><td class="txt"><b>${esc(x.hm)}</b></td><td class="txt">${esc(x.setor)}</td>
+      <td class="num">${x.itens}</td><td class="num">${n2(x.base)}</td><td class="num">${n2(x.calibrada)}</td>
+      <td class="num"><b>${n2(x.com_margem)}</b></td><td class="num">${n2(x.cronograma)}</td>
+      <td class="num" style="color:${cor};font-weight:600">${dv>0?'+':''}${n2(dv)}</td></tr>`;}).join('')}
+    </tbody></table>
+    <div class="nota">O desvio compara a hora <b>calibrada</b> (planilha × ${n2(D.fator_calibracao)}) com o que
+      está no cronograma mestre — sem a margem de segurança, para a comparação ser justa.</div></div>`;
+}
+
+function planilha(){
+  const tab=(t,linhas)=>`<div class="quadro"><h2>${t}</h2><table class="dados"><tbody>
+    ${linhas.map(l=>`<tr>${l.slice(0,4).map((c,i)=>`<td class="${i?'':'txt'}" ${i?'':'style="width:26%"'}>
+      ${i===0?'<b>'+esc(c)+'</b>':esc(c)}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`;
+  document.getElementById('plan').innerHTML=
+    tab('Resumo — aba Resumo do cronograma mestre',(D.resumo||[]).slice(1))+
+    tab('Premissas — aba Premissas do cronograma mestre',(D.premissas_planilha||[]).slice(1))+
+    `<div class="quadro"><h2>Parâmetros aplicados pelo programa</h2><table class="dados">
+      <thead><tr><th>Parâmetro</th><th class="num">Valor</th><th>Origem</th><th>Observação</th></tr></thead><tbody>
+      ${(D.parametros||[]).map(p=>`<tr><td class="txt"><code>${esc(p.parametro)}</code></td>
+        <td class="num">${n1(p.valor)}%</td><td class="txt">${esc(p.origem)}</td>
+        <td class="txt" style="font-size:11.5px">${esc(p.obs)}</td></tr>`).join('')}
+      </tbody></table>
+      <div class="nota">Feriados considerados: ${(D.feriados||[]).map(br).join(' · ')}</div></div>`;
+}
+
+function pendencias(){
+  const pend=D.pendencias||[], prem=D.premissas||[], terc=D.terceiros||[];
+  document.getElementById('seloPend').hidden=!pend.length;
+  document.getElementById('seloPend').textContent=pend.length;
+  const acao=p=>p.tipo==='SETOR SEM JANELA'
+    ? `<button class="btn3" onclick="calcularSetor('${esc(p.hm)}','${esc(p.setor)}')">Calcular janela</button>`
+    : '';
+  const tercTotal=terc.reduce((s,t)=>s+t.horas_base,0);
+  document.getElementById('pend').innerHTML=`
+    <div class="quadro"><h2>Pendências — o que falta definir ou está em conflito</h2>
+      ${pend.length?`<table class="dados"><thead><tr><th>Tipo</th><th>HM</th><th>Setor</th>
+        <th>O que precisa ser resolvido</th><th></th></tr></thead><tbody>
+        ${pend.map(p=>`<tr><td><span class="tag t-pend">${esc(p.tipo)}</span></td>
+          <td class="txt">${esc(p.hm)}</td><td class="txt">${esc(p.setor)}</td>
+          <td class="txt">${esc(p.detalhe)}</td><td>${acao(p)}</td></tr>`).join('')}</tbody></table>`
+        :'<div class="nota">Nenhuma pendência.</div>'}</div>
+    <div id="resSetor"></div>
+    ${terc.length?`<div class="quadro"><h2>Horas de terceiros — fora da capacidade do cronograma
+      (${n1(tercTotal)} h base)</h2>
+      <table class="dados"><thead><tr><th>HM</th><th>Item</th><th>Processo</th>
+        <th class="num">Horas base</th></tr></thead><tbody>
+      ${terc.map(t=>`<tr><td class="txt"><b>${esc(t.hm)}</b></td><td class="txt">${esc(t.item)}</td>
+        <td class="txt">${esc(Object.keys(t.processos||{}).join(', '))}</td>
+        <td class="num">${n1(t.horas_base)} h</td></tr>`).join('')}</tbody></table>
+      <div class="nota">Serviço executado fora da MoldeTerm. As horas ficam registradas aqui para não se
+        perderem, mas não consomem capacidade de nenhum setor nem aparecem na grade hora a hora.</div></div>`:''}
+    <div class="quadro"><h2>Premissas assumidas (${prem.length})</h2>
+      <table class="dados"><thead><tr><th>Onde</th><th>Item</th><th>Premissa</th></tr></thead><tbody>
+      ${prem.map(p=>`<tr><td class="txt"><code>${esc(p.onde)}</code></td><td class="txt">${esc(p.item)}</td>
+        <td class="txt">${esc(p.detalhe)}</td></tr>`).join('')}</tbody></table></div>`;
+}
+
+async function calcularSetor(hm,setor){
+  const el=document.getElementById('resSetor');
+  el.innerHTML='<div class="quadro"><div class="nota">Calculando a janela...</div></div>';
+  el.scrollIntoView({behavior:'smooth',block:'nearest'});
+  PLANO_SETOR=await (await fetch('/api/planejar-setor',{method:'POST',
+    headers:{'Content-Type':'application/json'},body:JSON.stringify({hm:hm,setor:setor})})).json();
+  const p=PLANO_SETOR;
+  if(p.erro){el.innerHTML=`<div class="aviso erro">${esc(p.erro)}</div>`;return;}
+  const oc=p.ocupacao_media||0;
+  const cor=oc>95?'var(--vermelho)':oc>80?'var(--ambar)':'var(--verde)';
+  const cab=p.cabe
+    ? `<div class="aviso ok"><b>Cabe no prazo.</b> ${esc(p.setor)} da ${esc(p.hm)} vai de ${br(p.inicio)} a
+       <b>${br(p.fim)}</b> — ${p.folga_dias} dia(s) antes da entrega de ${br(p.entrega)}.</div>`
+    : `<div class="aviso erro"><b>Não cabe no prazo com a capacidade normal.</b> ${esc(p.setor)} da
+       ${esc(p.hm)} só fecha em <b>${br(p.fim)}</b>, ${Math.abs(p.folga_dias)} dia(s) depois da entrega de
+       ${br(p.entrega)}. A data não foi forçada — a decisão de hora extra, terceirizar ou remanejar é sua.</div>`;
+  el.innerHTML=`${cab}
+    <div class="quadro"><h2>Janela calculada — ${esc(p.setor)} da ${esc(p.hm)}</h2>
+      <table class="dados"><thead><tr><th>Setor</th><th>Recurso</th><th class="num">Horas</th>
+        <th>Início</th><th>Fim</th><th class="num">Dias úteis</th><th class="num">h/dia</th>
+        <th class="num">Capacidade</th><th class="num">Ocupação</th><th>Abre com</th></tr></thead><tbody>
+      <tr><td class="txt"><b>${esc(p.setor)}</b></td>
+        <td class="txt" style="font-size:11.5px">${esc(p.recurso)}</td>
+        <td class="num">${n1(p.horas)} h</td><td>${br(p.inicio)}</td><td>${br(p.fim)}</td>
+        <td class="num">${p.dias_uteis}</td><td class="num">${n2(p.h_dia)}</td>
+        <td class="num">${n1(p.cap_dia)}</td>
+        <td class="num" style="color:${cor};font-weight:600">${n1(oc)}%</td>
+        <td class="txt" style="font-size:11.5px">${esc(p.regra)}${p.dias_esperando?
+          ` · esperou ${p.dias_esperando} dia(s) por capacidade`:''}</td></tr>
+      </tbody></table>
+      <div class="nota">${n1(p.base)} h da planilha da HM × ${n2(p.fator)} = ${n1(p.horas)} h, em
+        ${p.itens} item(ns). As HMs que já estão no cronograma não foram mexidas — este setor ocupou só o
+        que sobrava da capacidade em cada dia. Depois de gravada, a grade hora a hora fica
+        <b>espalhada por igual</b> na janela, então não é idêntica ao dia a dia usado aqui no cálculo.</div>
+    </div>
+    ${(p.avisos||[]).length?`<div class="aviso">${p.avisos.map(esc).join('<br>')}</div>`:''}
+    <div class="quadro"><div class="pasta">
+      <button class="btn2" onclick="gravarSetor()">Gravar esta janela no cronograma</button>
+      <span style="font-size:12px;color:var(--txt-2)">Acrescenta uma linha na planilha
+        <code>cronograma_mestre.xlsx</code> e guarda uma cópia de segurança da versão anterior antes.</span>
+    </div></div>`;
+}
+
+async function gravarSetor(){
+  const p=PLANO_SETOR; if(!p||p.erro)return;
+  if(!confirm(`Gravar ${p.setor} da ${p.hm} no cronograma mestre?\n\n`
+    +`${br(p.inicio)} a ${br(p.fim)} — uma linha nova.\n`
+    +`Uma cópia de segurança da planilha atual é guardada antes.`))return;
+  const r=await (await fetch('/api/gravar-setor',{method:'POST',headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({hm:p.hm,setor:p.setor_norm})})).json();
+  if(!r.ok){alert('Não consegui gravar: '+(r.erro||''));return;}
+  alert(`Gravado — ${r.detalhe}\nCópia de segurança: pedidos/backup/${r.backup}`);
+  PLANO_SETOR=null;
+  await carregar(); irPara('pend');
+}
+
+function exportarCSV(){
+  const cab=['HM','Item','Servico','Setor','Recurso','Horas base','Fator','Horas programadas',
+             'Horas realizadas','Saldo','Inicio programado','Fim programado','Inicio realizado',
+             'Fim realizado','Dias uteis','h/dia','Capacidade h/dia','Fonte das horas','Observacao'];
+  const nb=v=>String(v??'').replace('.',',');
+  const l=[cab].concat(filtradas().map(a=>[a.hm,a.item_nome||a.item,a.servico||'',a.setor,a.recurso,
+    nb(a.horas_base),nb(D.fator_total),nb(a.horas),nb(a.realizado||0),nb(Math.round((a.horas-(a.realizado||0))*100)/100),
+    br(a.inicio),br(a.fim),br(a.ap_inicio),br(a.ap_fim),a.dias_uteis,nb(a.h_dia),nb(a.cap_dia),
+    a.fonte_horas,a.obs||a.motivo||'']));
+  const csv='\ufeff'+l.map(x=>x.map(c=>`"${String(c).replace(/"/g,'""')}"`).join(';')).join('\r\n');
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'}));
+  a.download='cronograma_moldeterm.csv'; a.click();
+}
+
+document.querySelectorAll('.aba').forEach(b=>b.onclick=()=>irPara(b.dataset.aba));
+document.querySelectorAll('#escala button').forEach(b=>b.onclick=()=>{
+  document.querySelectorAll('#escala button').forEach(x=>x.classList.remove('on'));
+  b.classList.add('on'); ESCALA=b.dataset.e; render();});
+['fHm','fSetor'].forEach(id=>document.getElementById(id).onchange=render);
+document.getElementById('fTxt').oninput=()=>{clearTimeout(window._t);window._t=setTimeout(render,200)};
+carregar();
+</script>
+</body>
+</html>

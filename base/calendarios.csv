@@ -1,0 +1,5 @@
+calendario;dias_semana;inicio;fim;intervalo_inicio;intervalo_fim;horas_dia;origem;observacao
+COMERCIAL;seg-sex;07:00;16:48;11:45;12:45;8,80;CADASTRADO;Horario comercial padrao MoldeTerm
+TURNO1;seg-sex;04:45;14:03;11:30;12:00;8,80;CADASTRADO;1o turno
+TURNO2;seg-sex;14:03;23:10;19:00;19:30;8,62;CADASTRADO;2o turno
+CONTINGENCIAL;seg-sex;15:00;21:00;;;6,00;CADASTRADO;Regime do Amaral (bancada contingencial) - 132 h/mes

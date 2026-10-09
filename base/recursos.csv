@@ -1,0 +1,46 @@
+recurso;setor;funcao;calendario;maquina;capacidade_mensal_h;tipo;origem;observacao
+Jonas;Comercial;Comercial / start de projetos;COMERCIAL;;193,60;BASE;CADASTRADO;
+Luciano;Comercial;Comercial;COMERCIAL;;193,60;BASE;CADASTRADO;
+Norberto;Comercial;Comercial / apoio industrial;COMERCIAL;;193,60;BASE;CADASTRADO;
+Robson;Gestao fabrica / Compras;Gestor + comprador;COMERCIAL;;193,60;BASE;CADASTRADO;
+Carlos;PCP;Planejamento;COMERCIAL;;193,60;BASE;CADASTRADO;
+Vanessa;Financeiro / RH;Financeiro / RH / pedidos;COMERCIAL;;193,60;BASE;CADASTRADO;
+Tiago Amaro;Engenharia CAD;Dispositivos;COMERCIAL;;193,60;BASE;CADASTRADO;
+Tiago Polaquini;Engenharia CAD;Ferramental;COMERCIAL;;160,00;CONTRATADA;CADASTRADO;Capacidade contratada 160 h/mes
+Jose Espindola;Engenharia CAD;Ferramental;COMERCIAL;;193,60;BASE;CADASTRADO;
+Gerson Wirtel;Engenharia CAD;Moldes expansao;COMERCIAL;;193,60;BASE;CADASTRADO;
+Jaison;CAM;Expansao / modelos fundicao;COMERCIAL;;193,60;BASE;CADASTRADO;
+Andre;CAM;Usinagem geral;COMERCIAL;;193,60;BASE;CADASTRADO;
+Luciano (CAM);CAM;Moldes / pecas / dispositivos;COMERCIAL;;193,60;BASE;CADASTRADO;
+Alessandro;CNC Aluminio;Operador Lagun;COMERCIAL;LAGUN;193,60;BASE;CADASTRADO;
+Alex de Paula;CNC Aluminio;Operador Feeler 1600 + maquina 1250;COMERCIAL;FEELER 1600;193,60;BASE;CADASTRADO;Capacidade humana 193,60 h - nao duplicar entre as duas maquinas
+Alex da Silva;CNC Aco;Operador Grebo 1580;TURNO1;GREBO 1580;193,60;BASE;CADASTRADO;
+Alex - 2o turno;CNC Aco;Operador Grebo 1580;TURNO2;GREBO 1580;189,57;BASE;CADASTRADO;
+Daniel Severino;CNC Aco;Operador Hartford;TURNO1;HARTFORD;193,60;BASE;CADASTRADO;
+Maicon;CNC Aco;Operador Hartford;TURNO2;HARTFORD;189,57;BASE;CADASTRADO;
+Gustavo;CNC Aco;Operador Feeler 1000;TURNO1;FEELER 1000;193,60;BASE;CADASTRADO;
+Gabriel - Fresadora;CNC Aco;Operador Feeler 1000;TURNO2;FEELER 1000;189,57;BASE;CADASTRADO;
+Jonathan;CNC Aco;Fresadora CNC;TURNO1;DAEWO;193,60;BASE;CADASTRADO;
+Joelson - daewo;CNC Aco;Fresadora Daewo CNC;TURNO2;DAEWO;189,57;BASE;CADASTRADO;
+Leonardo;Torno CNC;Torno CNC;TURNO1;TORNO CNC;193,60;BASE;CADASTRADO;
+Gabriel - Torno;Torno CNC;Torno CNC;TURNO2;TORNO CNC;189,57;BASE;CADASTRADO;
+Anorildo;Tornearia convencional;2 tornos convencionais;COMERCIAL;;193,60;BASE;CADASTRADO;
+Rafael (fresa);Fresagem convencional;Fresador;COMERCIAL;;193,60;BASE;CADASTRADO;
+Leandro;Fresagem convencional;Fresador;COMERCIAL;;193,60;BASE;CADASTRADO;
+Alexandre Mudinho;Acabamento;Rebarba / rosca / acabamento;COMERCIAL;;193,60;BASE;CADASTRADO;
+Emerson;Bancada;N3 - moldes fundicao;COMERCIAL;;193,60;BASE;CADASTRADO;
+Alexandre Vignotto;Bancada;N3 - expansao;COMERCIAL;;193,60;BASE;CADASTRADO;
+Miguel;Bancada;Aprendiz;COMERCIAL;;193,60;BASE;CADASTRADO;
+Caua;Bancada;N2;COMERCIAL;;193,60;BASE;CADASTRADO;
+Antonio;Bancada;N3;COMERCIAL;;193,60;BASE;CADASTRADO;
+Joelson;Bancada;N2;COMERCIAL;;193,60;BASE;CADASTRADO;
+Amaral;Bancada;N3 contingencial;CONTINGENCIAL;;132,00;CONTINGENCIAL;CADASTRADO;Nao entra na capacidade base
+Tiago (solda);Solda;Soldador aco/aluminio;COMERCIAL;;193,60;BASE;CADASTRADO;
+Harold;Solda;Soldador aco/aluminio;COMERCIAL;;193,60;BASE;CADASTRADO;
+Abraao;Modelacao;Modelos em isopor;COMERCIAL;;193,60;BASE;CADASTRADO;
+Denilson;Montagem;Montador / facilitador;COMERCIAL;;193,60;BASE;CADASTRADO;
+Osni;Montagem;Montador;COMERCIAL;;193,60;BASE;CADASTRADO;
+Everton;Almoxarifado;Recebimento / almoxarifado;COMERCIAL;;193,60;BASE;CADASTRADO;
+Nelson Junior;Qualidade;Medicao / inspecao;COMERCIAL;;193,60;BASE;CADASTRADO;
+Rafael (qualidade);Qualidade;Medicao / logistica terceiros;COMERCIAL;;193,60;BASE;CADASTRADO;
+Elmar;Qualidade;Gestao qualidade / EPI / 5S;COMERCIAL;;193,60;BASE;CADASTRADO;

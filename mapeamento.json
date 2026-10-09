@@ -1,0 +1,18 @@
+{
+  "_ajuda": [
+    "Use este arquivo para ensinar ao programa como se chamam as colunas do apontamento",
+    "exportado do SEU ERP. Nao precisa acento nem maiuscula certa - a comparacao ignora isso.",
+    "Os nomes de fabrica continuam valendo; o que voce escreve aqui tem prioridade.",
+    "Depois de editar, clique em 'Recalcular cronograma' na tela."
+  ],
+  "apontamentos": {
+    "data":        ["Dia"],
+    "hora_inicio": ["Hora Inicial"],
+    "hora_fim":    ["Hora Final"],
+    "projeto":     ["Ordem de Servico"],
+    "conjunto":    ["Conjunto"],
+    "processo":    ["Processo"],
+    "operador":    ["Colaborador"],
+    "horas":       ["Tempo Realizado"]
+  }
+}

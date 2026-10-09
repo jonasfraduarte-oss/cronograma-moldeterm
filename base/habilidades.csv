@@ -1,0 +1,25 @@
+processo;recurso;maquina;origem;observacao
+PROJETOS;Tiago Polaquini;;CADASTRADO;Projetista de ferramental - definido para moldes de fundicao
+PROJETOS;Jose Espindola;;CADASTRADO;Projetista de ferramental - definido para moldes de fundicao
+CAM;Jaison;;CADASTRADO;CAM de modelos de fundicao
+CAM;Andre;;PREMISSA;CAM usinagem geral - confirmar se atende moldes de fundicao
+CAM;Luciano (CAM);;PREMISSA;CAM moldes/pecas/dispositivos - confirmar se atende esta familia
+MODELACAO;Abraao;;CADASTRADO;Modelos em isopor
+USINAGEM CNC;Alessandro;LAGUN;PREMISSA;Etapa agregada da matriz - confirmar maquina por tipo de ferramental
+USINAGEM CNC;Alex de Paula;FEELER 1600;PREMISSA;idem
+CNC GRANDE;Alex da Silva;GREBO 1580;PREMISSA;Confirmar qual maquina atende CNC GRANDE
+CNC GRANDE;Alex - 2o turno;GREBO 1580;PREMISSA;idem - 2o turno da mesma maquina
+CNC MEDIO;Daniel Severino;HARTFORD;PREMISSA;Confirmar quais maquinas atendem CNC MEDIO
+CNC MEDIO;Maicon;HARTFORD;PREMISSA;idem - 2o turno
+CNC MEDIO;Gustavo;FEELER 1000;PREMISSA;idem
+CNC MEDIO;Gabriel - Fresadora;FEELER 1000;PREMISSA;idem - 2o turno
+FRESA CNC;Jonathan;DAEWO;PREMISSA;Confirmar qual maquina atende FRESA CNC
+FRESA CNC;Joelson - daewo;DAEWO;PREMISSA;idem - 2o turno
+AJUSTAGEM;Emerson;;CADASTRADO;N3 - bancada moldes de fundicao
+AJUSTAGEM;Antonio;;PREMISSA;N3 - confirmar habilitacao para moldes de fundicao
+AJUSTAGEM;Caua;;PREMISSA;N2 - confirmar habilitacao
+AJUSTAGEM;Joelson;;PREMISSA;N2 - confirmar habilitacao
+MONTAGEM;Denilson;;PREMISSA;Confirmar se montagem entra no roteiro desta familia
+MONTAGEM;Osni;;PREMISSA;idem
+MEDICAO INSPECAO;Nelson Junior;;PREMISSA;Confirmar se inspecao interna entra no roteiro
+MEDICAO INSPECAO;Rafael (qualidade);;PREMISSA;idem

@@ -1,0 +1,18 @@
+# cache do Python
+__pycache__/
+*.pyc
+
+# configuracao local (a pasta do ERP e so desta maquina)
+config.json
+
+# copias de seguranca geradas pelo programa
+pedidos/backup/
+
+# arquivos temporarios do Excel
+~$*
+*.tmp
+
+# apontamentos exportados do ERP (dado de producao, nao vai para o repositorio)
+dados/apontamentos*.xlsx
+dados/apontamentos*.csv
+!dados/apontamentos_EXEMPLO.xlsx

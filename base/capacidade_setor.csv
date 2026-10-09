@@ -1,0 +1,11 @@
+setor;chave;h_dia;calendarios;composicao;origem;observacao
+Projeto/CAD;PROJETO/CAD;16,07;COMERCIAL;2 projetistas habilitados para fundicao;CADASTRADO;Premissas do cronograma mestre
+CAM;CAM;26,40;COMERCIAL;3 programadores;CADASTRADO;Premissas do cronograma mestre
+Usinagem;USINAGEM;93,67;TURNO1+TURNO2;Grebo + Feeler + Iru/Daewo + Hartford + Torno;CADASTRADO;CNC aco + torno
+Usinagem;USINAGEM LAGUN;8,80;COMERCIAL;Lagun;CADASTRADO;Horario comercial
+Convencional;CONVENCIONAL;17,60;COMERCIAL;2 fresadoras convencionais;CADASTRADO;Respiros, peneiras e furacoes
+Solda;SOLDA;17,60;COMERCIAL;2 soldadores (Tiago + Harold);CADASTRADO;Premissas do cronograma mestre
+Bancada;BANCADA;14,80;COMERCIAL+CONTINGENCIAL;Emerson + Amaral;CADASTRADO;Amaral e contingencial (15:00-21:00)
+Digitalizacao;DIGITALIZACAO;8,80;COMERCIAL;1 recurso de medicao;CADASTRADO;Premissas do cronograma mestre
+Entrega;ENTREGA;0;COMERCIAL;marco de entrega;CADASTRADO;Marco sem duracao - nao consome capacidade
+Terceiros;TERCEIROS;0;COMERCIAL;servico externo (eletroerosao a fio e por penetracao);CADASTRADO;Fora da capacidade interna - as horas ficam registradas mas nao entram na grade nem na carga dos setores

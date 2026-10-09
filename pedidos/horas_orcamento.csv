@@ -1,0 +1,24 @@
+projeto;conjunto;processo;valor;unidade;origem;observacao
+ORC 5141 - RT33380F;Ferramental RT33380F / R9042010007;PROJETOS;25;horas;ORCAMENTO;Orcamento traz 25:00:00 em horas - a matriz C3 define Projeto em 5 dias (divergencia sinalizada)
+ORC 5141 - RT33380F;Ferramental RT33380F / R9042010007;CAM;16;horas;ORCAMENTO;
+ORC 5141 - RT33380F;Ferramental RT33380F / R9042010007;FRESA CNC;8;horas;ORCAMENTO;
+ORC 5141 - RT33380F;Ferramental RT33380F / R9042010007;CNC GRANDE;44;horas;ORCAMENTO;
+ORC 5141 - RT33380F;Ferramental RT33380F / R9042010007;CNC MEDIO;12;horas;ORCAMENTO;
+ORC 5141 - RT33380F;Ferramental RT33380F / R9042010007;AJUSTAGEM;30;horas;ORCAMENTO;
+ORC 5141 - RT33380F;Ferramental RT33380F / R9042010007;MODELACAO;;PENDENTE;ORCAMENTO;Orcamento traz 2,00 como quantidade sem unidade de hora - duracao nao pode ser calculada
+ORC 3688 - Carcaca R_9042011201;Ferramental Carcaca R_9042011201;CAM;23;horas;ORCAMENTO;
+ORC 3688 - Carcaca R_9042011201;Ferramental Carcaca R_9042011201;FRESA CNC;6;horas;ORCAMENTO;
+ORC 3688 - Carcaca R_9042011201;Ferramental Carcaca R_9042011201;CNC GRANDE;70;horas;ORCAMENTO;
+ORC 3688 - Carcaca R_9042011201;Ferramental Carcaca R_9042011201;CNC MEDIO;12;horas;ORCAMENTO;
+ORC 3688 - Carcaca R_9042011201;Ferramental Carcaca R_9042011201;AJUSTAGEM;46;horas;ORCAMENTO;
+ORC 3688 - Carcaca R_9042011201;Ferramental Carcaca R_9042011201;MODELACAO;;PENDENTE;ORCAMENTO;Aparece como 1,00 sem unidade - duracao nao pode ser calculada
+ORC 3688 - Carcaca R_9042011201;Caixa de Macho 1 R_9042011201;CAM;12;horas;ORCAMENTO;
+ORC 3688 - Carcaca R_9042011201;Caixa de Macho 1 R_9042011201;FRESA CNC;2;horas;ORCAMENTO;
+ORC 3688 - Carcaca R_9042011201;Caixa de Macho 1 R_9042011201;CNC MEDIO;30;horas;ORCAMENTO;
+ORC 3688 - Carcaca R_9042011201;Caixa de Macho 1 R_9042011201;AJUSTAGEM;18;horas;ORCAMENTO;
+ORC 3688 - Carcaca R_9042011201;Caixa de Macho 1 R_9042011201;MODELACAO;;PENDENTE;ORCAMENTO;Conflito entre abas do orcamento (1,00 na consolidada e 4 na aba do conjunto), sem unidade
+ORC 3688 - Carcaca R_9042011201;Caixa de Macho 2 R_9042011201;CAM;12;horas;ORCAMENTO;
+ORC 3688 - Carcaca R_9042011201;Caixa de Macho 2 R_9042011201;FRESA CNC;2;horas;ORCAMENTO;
+ORC 3688 - Carcaca R_9042011201;Caixa de Macho 2 R_9042011201;CNC MEDIO;30;horas;ORCAMENTO;
+ORC 3688 - Carcaca R_9042011201;Caixa de Macho 2 R_9042011201;AJUSTAGEM;18;horas;ORCAMENTO;
+ORC 3688 - Carcaca R_9042011201;Caixa de Macho 2 R_9042011201;MODELACAO;;PENDENTE;ORCAMENTO;Conflito entre abas do orcamento (1,00 na consolidada e 4 na aba do conjunto), sem unidade

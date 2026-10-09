@@ -1,0 +1,3 @@
+parametro;valor;origem;observacao
+calibracao_pct;20;CADASTRADO;"Horas calibradas = horas estimadas x 1,20" - regra registrada na aba Premissas do cronograma mestre. Confirmado pela HM 059, que bate exatamente com esse fator.
+margem_seguranca_pct;6;CADASTRADO;Margem de seguranca aplicada em cima de cada hora do cronograma. Confirmado por Jonas em 14/09/2026: SOMA a calibracao de 20%, fator final 1,272.
